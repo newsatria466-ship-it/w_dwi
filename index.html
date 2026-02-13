@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Kamu ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffcad4;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Container utama */
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            z-index: 10;
+            margin-top: 5vh;
+            transition: all 0.5s ease;
+        }
+
+        h1 { color: #ff4d6d; font-size: 24px; margin-top: 20px; }
+
+        .media-container {
+            width: 100%;
+            height: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        video, .pacar-foto {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        .btns {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            height: 50px;
+            position: relative;
+        }
+
+        button {
+            padding: 10px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        #yesBtn { 
+            background-color: #ff4d6d; 
+            color: white; 
+            animation: pulse 1.5s infinite; 
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255, 77, 109, 0.5); }
+            100% { transform: scale(1); }
+        }
+
+        #noBtn { background-color: #adb5bd; color: white; position: relative; transition: 0.1s; }
+
+        .final-message {
+            display: none;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+            margin-top: 20px;
+            animation: fadeIn 1s ease;
+        }
+
+        #typingTeks {
+            color: #d63384;
+            font-size: 17px;
+            font-weight: 500;
+            line-height: 1.4;
+            min-height: 80px;
+        }
+
+        #countdownContainer {
+            margin-top: 20px;
+            padding: 10px;
+            border-top: 1px dashed #ffcad4;
+        }
+        #countdownTitle { font-size: 13px; color: #ff4d6d; margin-bottom: 5px; font-weight: bold;}
+        #timer { font-size: 16px; color: #d63384; font-weight: bold; }
+
+        #extraMessage {
+            display: none;
+            margin-top: 30px;
+            font-style: italic;
+            color: #ff4d6d;
+            font-size: 15px;
+            height: 20px;
+            animation: fadeIn 1s ease;
+        }
+
+        /* Seksi Hadiah */
+        #giftSection { display: none; text-align: center; padding: 50px 0; width: 100%; animation: fadeIn 1.5s ease; }
+        .gift-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 20px; }
+        .gift-box-wrapper { display: flex; flex-direction: column; align-items: center; width: 120px; position: relative; }
+        
+        .gift-box {
+            width: 80px; height: 80px;
+            background-color: #ff4d6d;
+            border-radius: 15px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 35px; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            z-index: 5;
+        }
+        .gift-box:active { transform: scale(0.9) rotate(5deg); }
+        .gift-label { margin-top: 10px; font-size: 14px; font-weight: bold; color: #d63384; }
+
+        #secretSection { 
+            display: none; 
+            flex-direction: column;
+            align-items: center; 
+            margin-top: 40px; 
+            width: 100%; 
+            padding-bottom: 50px; 
+        }
+        .envelope {
+            font-size: 70px; cursor: pointer; display: inline-block;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 20px;
+        }
+
+        #photoGallery {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin: 40px auto 0 auto;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .hanging-frame {
+            background: white;
+            padding: 10px 10px 30px 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+            position: relative;
+            transform-origin: top center;
+            animation: swing 3s ease-in-out infinite;
+        }
+        .hanging-frame::before { 
+            content: "";
+            width: 2px; height: 30px;
+            background: #555;
+            position: absolute; top: -30px; left: 50%;
+        }
+        .hanging-frame img { width: 130px; height: 160px; object-fit: cover; border: 1px solid #eee; }
+        .photo-note { 
+            position: absolute; bottom: 5px; left: 0; right: 0;
+            font-size: 11px; font-style: italic; color: #ff4d6d;
+            text-align: center; padding: 0 5px;
+        }
+        @keyframes swing {
+            0% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+            100% { transform: rotate(-3deg); }
+        }
+
+        /* Pesan Panjang */
+        #longMessage {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            margin: 50px 20px;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            text-align: left;
+            line-height: 1.6;
+            color: #444;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border-left: 5px solid #ff4d6d;
+            animation: fadeIn 1.5s ease;
+        }
+        .message-text { font-size: 15px; white-space: pre-line; }
+        .english-ver { 
+            margin-top: 25px; 
+            padding-top: 20px; 
+            border-top: 1px solid #ffcad4; 
+            font-style: italic; 
+            color: #d63384;
+        }
+
+        .modal {
+            display: none; position: fixed; z-index: 100; left: 0; top: 0; 
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); 
+            justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background-color: white; padding: 40px; border-radius: 20px;
+            text-align: center; max-width: 300px; width: 80%;
+            position: relative; animation: popScale 0.4s forwards;
+        }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 25px; cursor: pointer; color: #999; }
+        
+        @keyframes popScale { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .flower { position: fixed; top: -10%; z-index: 1; pointer-events: none; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="media-container" id="mainMedia">
+            <video id="stikerVideo" autoplay loop muted playsinline>
+                <source src="koceng.mp4" type="video/mp4">
+            </video>
+        </div>
+        
+        <h1 id="question">Will you be my Valentine? ❤️</h1>
+        
+        <div class="btns" id="buttonContainer">
+            <button id="yesBtn" onclick="nextPage()">YES</button>
+            <button id="noBtn">No</button>
+        </div>
+
+        <div id="successContent" class="final-message">
+            <img src="MITTT.jpeg" alt="Sayangku" class="pacar-foto" style="width: 120px; height: 150px;">
+            <p id="typingTeks"></p>
+        </div>
+
+        <div id="extraMessage"></div>
+
+        <div id="countdownContainer">
+            <div id="countdownTitle">Menuju Valentine:</div>
+            <div id="timer">Loading...</div>
+        </div>
+
+        <p id="scrollHint" style="display:none; color: #ff4d6d; font-weight: bold; margin-top: 15px; animation: fadeIn 1s ease;">Coba scroll ke bawah! 👇</p>
+    </div>
+
+    <div id="giftSection">
+        <h2 style="color: #ff4d6d;">Gacha seng <br> Pilih satu aja kocak 🎁</h2>
+        <div class="gift-container">
+            <div class="gift-box-wrapper"><div class="gift-box" onclick="openGift(1, this)">🎁</div><div class="gift-label">Kado 1</div></div>
+            <div class="gift-box-wrapper"><div class="gift-box" onclick="openGift(2, this)">🎁</div><div class="gift-label">Kado 2</div></div>
+            <div class="gift-box-wrapper"><div class="gift-box" onclick="openGift(3, this)">🎁</div><div class="gift-label">Kado 3</div></div>
+        </div>
+
+        <div id="secretSection">
+            <h2 style="color: #ff4d6d;">Ada Surat Rahasia... 💌</h2>
+            <div class="envelope" onclick="openSecret(this)">✉️</div>
+            
+            <div id="photoGallery">
+                <div class="hanging-frame">
+                    <img src="jenong.jpeg" alt="Foto 1">
+                    <div class="photo-note">Jenongnyaaaaa acuuuuuu 😍</div>
+                </div>
+                <div class="hanging-frame" style="animation-delay: 0.5s;">
+                    <img src="mitbung.jpeg" alt="Foto 2">
+                    <div class="photo-note">Ini cakep puol sihhh 💖</div>
+                </div>
+                <div class="hanging-frame" style="animation-delay: 1s;">
+                    <img src="mitkalem.jpeg" alt="Foto 3">
+                    <div class="photo-note">Vibesnya kya perang dunia III! ❤️</div>
+                </div>
+            </div>
+
+            <div id="longMessage">
+                <div class="message-text">
+                    sayang makasih yahh udaah mau nemenin aku sejauh ini dari awal kita ketemu sebenernya aku sih expect aja sampe sejauh ini soalnya dari awal bngt ya seng aku kek udah senyaman itu entah itu ngobrol dan lain lain kayak aku senyaman itu sama kamu gatau kenapa
+
+                    Terimakasih juga kamu selalu jadi pendengar yang baik memberikan beberapa pendapat kamu terus, "terus bang terus" paan sih gjls maap iklan. Eeee apalagi yah pokonamah aku bikin ini juga gatau sih buat apa aku cuma suka kamu aja seng
+
+                    Ohh iyaa kamu cantik seng buat sekarang atau pertama kali kamu kasih tunjuk pesona kecantikannn muu "Azeeekk" aku udah jatuh cintaaa lagi dan lagi dan lagi sampe kita berani percaya diri buat video call bisa tau satu sama lain bisa tau kekurangan masing masing (menurut aku km cuma kurang tinggi 3cm), maap ye kalo aku banyak kurangnya (pasti km gasuka sih aku minta maap yekann) iya tapi aku bakal berusaha buat kita ya sengg bakal berusaha lebih baik bakal berusaha pantes buat kamu bakal berusaha cakepan dikit kek orang orang biar kamu sukaaaaaaaaa itu point pertama kalo yang lain lain jg banyak seng kayak mungkin aku jadi lebih pd depan banyak orang mungkin yyaa
+
+                    Teruss apalagi ya oh iya kamu, kamu, dan kamu, kamu cantik sayang, kamu beneran cantik, aku beneran ngeliat kamu cantik sekalii apalagi kalo video call aku sukaaaa bngt itu kayak apayah seneng Ajja deh kalo bisa video call sama kamuu, maap yeahhh kalo emng akunya sering minta vc terus mwhehwhe soalnya aku jatuh cintaaa terus kalo ngeliat aslinya kamuuu omayygattt (gjls apasih)
+
+                    Mungkin alesan kamu gamau iya mungkin kamu ngeliat diri kamunya jadi tidak pd TAPIIII AKU TEGESIN LARI YAH kamu cantik, kamu cantik bngt aku suka kamu, aku suka mata kamu, aku pipi kamu, aku suka JENONGNYA KAMUUUU, aku suka semuanya tentang kamu seng
+
+                    Sayang terimakasih banyak lopyu
+                    Happy Valentine's Day my lop
+
+                    <strong>Aku sayang kamu Putu Jessica Padmadewi Kemuning</strong>
+                    Aku Bangga punya kamu, kamu orang baik, aku bersyukur sekali di pertemukan sama kau, kamu baik, kamu pinter, kamu sempurna seng 
+
+                    aku sayang kamu hari ini, kemarin, besok, dan selama mungkin dan semoga bisa terus sama sama yah seng, semoga ada jalan buat kitaa Aminnnnn
+                </div>
+                
+                <div class="english-ver">
+                    I love you today, tomorrow, and forever.
+                    I truly love you with all my heart.
+                    I want us to keep choosing each other,
+                    to grow together, and to be happy side by side.
+                    I really hope there will always be a way for us
+                    to stay together, keep loving each other,
+                    and walk this journey hand in hand, my love. 💕
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="giftModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="modalEmoji" style="font-size: 60px; margin-bottom: 15px;">🍫</div>
+            <div class="modal-text" id="modalText"></div>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const modal = document.getElementById('giftModal');
+
+        function typeWriter(text, i, fnCallback) {
+            if (i < text.length) {
+                document.getElementById("typingTeks").innerHTML = text.substring(0, i+1) +'<span aria-hidden="true">|</span>';
+                setTimeout(function() { typeWriter(text, i + 1, fnCallback) }, 70);
+            } else if (typeof fnCallback == 'function') {
+                document.getElementById("typingTeks").innerHTML = text;
+            }
+        }
+
+        function startCountdown() {
+            // Menentukan target: Tanggal 14 Feb 2026 jam 00:00
+            const valentineDate = new Date("Feb 14, 2026 00:00:00").getTime();
+            
+            const x = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = valentineDate - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Karena ini buat besok, kita tampilkan Jam, Menit, Detik
+                document.getElementById("timer").innerHTML = hours + "j " + minutes + "m " + seconds + "d ";
+
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("countdownTitle").innerHTML = "Happy Valentine! ❤️";
+                    document.getElementById("timer").innerHTML = "HARI KASIH SAYANG!";
+                }
+            }, 1000);
+        }
+        startCountdown();
+
+        const messages = [
+            "Sehat sehat terus yah kamu 😊",
+            "Terima kasih sudah ada di hidupku ❤️",
+            "lopyu 🍎",
+            "sayang kamu ✨",
+            "Semoga kamu bahagia terus yaa sama aku",
+        ];
+        let msgIndex = 0;
+        function showNextMessage() {
+            const extraMsg = document.getElementById('extraMessage');
+            if (extraMsg) {
+                extraMsg.style.opacity = 0;
+                setTimeout(() => {
+                    extraMsg.innerHTML = messages[msgIndex];
+                    extraMsg.style.opacity = 1;
+                    msgIndex = (msgIndex + 1) % messages.length;
+                }, 500);
+            }
+        }
+
+        noBtn.addEventListener('mouseover', () => {
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = Math.random() * (window.innerWidth - noBtn.offsetWidth) + 'px';
+            noBtn.style.top = Math.random() * (window.innerHeight - noBtn.offsetHeight) + 'px';
+        });
+
+        function nextPage() {
+            document.getElementById('question').innerHTML = "I Knew You'd Say Yes! 🥰";
+            document.getElementById('buttonContainer').style.display = 'none';
+            document.querySelector('source').src = "hapy.webm";
+            const videoTag = document.getElementById('stikerVideo');
+            videoTag.load(); videoTag.play();
+            
+            document.getElementById('successContent').style.display = 'flex';
+            document.getElementById('giftSection').style.display = 'block';
+            document.getElementById('scrollHint').style.display = 'block';
+            document.getElementById('extraMessage').style.display = 'block';
+            document.getElementById('secretSection').style.display = 'flex';
+  
+            typeWriter("Terima kasih sudah memilih untuk berjalan bersamaku. Di mataku, kamu adalah bagian terbaik dari setiap hari-hariku. I love you! ❤️✨", 0);
+            
+            setInterval(createFlower, 300);
+            setInterval(showNextMessage, 3000);
+            showNextMessage();
+        }
+
+        function openSecret(el) {
+            el.innerHTML = "📂"; 
+            document.getElementById('photoGallery').style.display = 'flex';
+            document.getElementById('longMessage').style.display = 'block';
+            setTimeout(() => {
+                window.scrollTo({ top: el.offsetTop + 100, behavior: 'smooth' });
+            }, 100);
+        }
+
+        function openGift(id, element) {
+            const mE = document.getElementById('modalEmoji');
+            const mT = document.getElementById('modalText');
+            if(id === 1) { mE.innerHTML = "🍫"; mT.innerHTML = "Selamat dapet cokelat! <br> SS dan kirim ke aku ya! ❤️"; }
+            else if(id === 2) { mE.innerHTML = "🍎"; mT.innerHTML = "Selamat dapet apel! <br> Sehat terus ya sayang! 🍎"; }
+            else if(id === 3) { mE.innerHTML = "👑"; mT.innerHTML = "Horee dapet Voucher 'Turutin 1 Permintaan'! <br> Bebas mau minta apa aja (asal logis ya kocak), aku turutin! 👑✨"; }
+            setTimeout(() => { modal.style.display = "flex"; }, 100);
+        }
+
+        function closeModal() { modal.style.display = "none"; }
+        window.onclick = function(e) { if (e.target == modal) modal.style.display = "none"; }
+
+        function createFlower() {
+            const f = document.createElement('div');
+            f.classList.add('flower');
+            f.innerHTML = ['🌸', '🌹', '✨', '❤️'][Math.floor(Math.random() * 4)];
+            f.style.left = Math.random() * 100 + 'vw';
+            f.style.fontSize = Math.random() * 20 + 15 + 'px';
+            f.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(f);
+            setTimeout(() => f.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
