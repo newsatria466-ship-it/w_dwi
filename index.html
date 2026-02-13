@@ -31,6 +31,13 @@
         }
 
         h1 { color: #ff4d6d; font-size: 24px; margin-top: 20px; }
+        
+        /* Gaya untuk logo hati agar terlihat seperti teks biasa tapi bisa diklik */
+        .secret-heart {
+            cursor: default;
+            user-select: none;
+            display: inline-block;
+        }
 
         .media-container {
             width: 100%;
@@ -105,7 +112,15 @@
             border-top: 1px dashed #ffcad4;
         }
         #countdownTitle { font-size: 13px; color: #ff4d6d; margin-bottom: 5px; font-weight: bold;}
-        #timer { font-size: 16px; color: #d63384; font-weight: bold; }
+        
+        /* Timer juga tetap jadi tombol rahasia (double click) */
+        #timer { 
+            font-size: 16px; 
+            color: #d63384; 
+            font-weight: bold; 
+            cursor: default;
+            user-select: none;
+        }
 
         #extraMessage {
             display: none;
@@ -237,7 +252,7 @@
             </video>
         </div>
         
-        <h1 id="question">Will you be my Valentine? ❤️</h1>
+        <h1 id="question">Will you be my Valentine? <span class="secret-heart" onclick="jalankanSemuaFitur()">❤️</span></h1>
         
         <div class="btns" id="buttonContainer">
             <button id="yesBtn" onclick="nextPage()">YES</button>
@@ -253,7 +268,7 @@
 
         <div id="countdownContainer">
             <div id="countdownTitle">Menuju Valentine:</div>
-            <div id="timer">Loading...</div>
+            <div id="timer" ondblclick="jalankanSemuaFitur()">Loading...</div>
         </div>
 
         <p id="scrollHint" style="display:none; color: #ff4d6d; font-weight: bold; margin-top: 15px; animation: fadeIn 1s ease;">Coba scroll ke bawah! 👇</p>
@@ -342,19 +357,16 @@
         }
 
         function startCountdown() {
-            // Menentukan target: Tanggal 14 Feb 2026 jam 00:00
             const valentineDate = new Date("Feb 14, 2026 00:00:00").getTime();
             
             const x = setInterval(function() {
                 const now = new Date().getTime();
                 const distance = valentineDate - now;
 
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                // Karena ini buat besok, kita tampilkan Jam, Menit, Detik
                 document.getElementById("timer").innerHTML = hours + "j " + minutes + "m " + seconds + "d ";
 
                 if (distance < 0) {
@@ -392,12 +404,27 @@
             noBtn.style.top = Math.random() * (window.innerHeight - noBtn.offsetHeight) + 'px';
         });
 
+        // Proteksi tanggal untuk Jessica
         function nextPage() {
+            const now = new Date().getTime();
+            const valentineDate = new Date("Feb 14, 2026 00:00:00").getTime();
+
+            if (now < valentineDate) {
+                alert("Sabar ya Cantikkk, kuncinya baru kebuka tanggal 14! ❤️");
+                return;
+            }
+            jalankanSemuaFitur();
+        }
+
+        // Fungsi bypass untuk kamu
+        function jalankanSemuaFitur() {
             document.getElementById('question').innerHTML = "I Knew You'd Say Yes! 🥰";
             document.getElementById('buttonContainer').style.display = 'none';
-            document.querySelector('source').src = "hapy.webm";
+            
             const videoTag = document.getElementById('stikerVideo');
-            videoTag.load(); videoTag.play();
+            videoTag.querySelector('source').src = "hapy.webm";
+            videoTag.load(); 
+            videoTag.play();
             
             document.getElementById('successContent').style.display = 'flex';
             document.getElementById('giftSection').style.display = 'block';
@@ -424,9 +451,9 @@
         function openGift(id, element) {
             const mE = document.getElementById('modalEmoji');
             const mT = document.getElementById('modalText');
-            if(id === 1) { mE.innerHTML = "🍫"; mT.innerHTML = "Selamat dapet cokelat! <br> SS dan kirim ke aku ya! ❤️"; }
-            else if(id === 2) { mE.innerHTML = "🍎"; mT.innerHTML = "Selamat dapet apel! <br> Sehat terus ya sayang! 🍎"; }
-            else if(id === 3) { mE.innerHTML = "👑"; mT.innerHTML = "Horee dapet Voucher 'Turutin 1 Permintaan'! <br> Bebas mau minta apa aja (asal logis ya kocak), aku turutin! 👑✨"; }
+            if(id === 1) { mE.innerHTML = "🍫"; mT.innerHTML = "Yeayyy dapet cokelat!🥳 <br> SS kirim ke aku seng! ❤️"; }
+            else if(id === 2) { mE.innerHTML = "🍎"; mT.innerHTML = "Apel Gunung Fuji! <br> Ambil sendiri tapi! (iya ini apel fuji seng) 🍎"; }
+            else if(id === 3) { mE.innerHTML = "👑"; mT.innerHTML = "Horee dapet Voucher 'Turutin 1 Permintaan'! <br> Bebas mau apa kamu (Tapi Dipake Otaknya yachh Cantikk), aku turutin! 👑✨"; }
             setTimeout(() => { modal.style.display = "flex"; }, 100);
         }
 
